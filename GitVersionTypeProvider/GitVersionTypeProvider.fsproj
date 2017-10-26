@@ -51,35 +51,6 @@
     </Otherwise>
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
-  <ItemGroup>
-    <Compile Include="AssemblyReader.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="AssemblyReaderReflection.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="ProvidedTypes.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="ProvidedTypes.fsi">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="ProvidedTypesContext.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="ProvidedTypesTesting.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="AssemblyInfo.fs" />
-    <Content Include="paket.references" />
-    <Compile Include="GitVersionTypeProvider.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -954,4 +925,34 @@
     </When>
   </Choose>
   <Import Project="..\packages\NETStandard.Library\build\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library\build\NETStandard.Library.targets')" Label="Paket" />
+  <ItemGroup>
+    <Compile Include="AssemblyReader.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="AssemblyReaderReflection.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="ProvidedTypes.fsi">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="ProvidedTypes.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="ProvidedTypesContext.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="ProvidedTypesTesting.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="AssemblyInfo.fs" />
+    <Content Include="paket.references" />
+    <Compile Include="GitVersionTypeProvider.fs" />
+    <None Include="PlayWithLib2Git.fsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+  </ItemGroup>
 </Project>
