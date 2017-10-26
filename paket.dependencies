@@ -1,4 +1,5 @@
 source https://www.nuget.org/api/v2/
 
 nuget FSharp.Core
+nuget LibGit2Sharp
 nuget System.ValueTuple 4.4.0 restriction: >= net452
