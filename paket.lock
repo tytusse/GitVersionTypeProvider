@@ -24,6 +24,7 @@ NUGET
       System.Threading.Thread (>= 4.0) - restriction: && (< net45) (>= netstandard1.6)
       System.Threading.ThreadPool (>= 4.0.10) - restriction: && (< net45) (>= netstandard1.6)
       System.Threading.Timer (>= 4.0.1) - restriction: && (< net45) (>= netstandard1.6)
+    FSharp.TypeProviders.StarterPack (2.1)
     LibGit2Sharp (0.24)
       LibGit2Sharp.NativeBinaries (1.0.185)
     LibGit2Sharp.NativeBinaries (1.0.185)

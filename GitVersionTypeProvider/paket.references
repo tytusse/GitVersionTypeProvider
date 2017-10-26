@@ -1,3 +1,4 @@
 System.ValueTuple
 FSharp.Core
 LibGit2Sharp
+FSharp.TypeProviders.StarterPack
