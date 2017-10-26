@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="AssemblyInfo.fs" />
     <Content Include="paket.references" />
+    <Compile Include="GitVersionTypeProvider.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
