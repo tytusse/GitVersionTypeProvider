@@ -19,6 +19,7 @@ do
         "sha", r.Head.Tip.Sha 
         "branch", r.Head.TrackedBranch.FriendlyName
         "repo", r.Network.Remotes.[r.Head.RemoteName].Url
+        "isRemote", string r.Head.IsRemote
     ]
     |> List.iter (fun (n,v) -> printfn "%s=%s" n v)
     

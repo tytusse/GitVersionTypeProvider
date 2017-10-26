@@ -4,3 +4,5 @@ open System.Reflection
 
 [<assembly: AssemblyFileVersion(Git.Version.Value)>]
 do ()
+
+printfn "%s" Git.Version.ResolutionFolder
