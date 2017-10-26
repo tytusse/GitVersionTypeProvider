@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{91F5B78E-3B41-43D8-BACE-6EBFBA457C4E}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "GitVersionTypeProvider", "GitVersionTypeProvider\GitVersionTypeProvider.fsproj", "{EA9B2D7F-C0E8-4E81-9D94-51A1D15D1FB8}"
 EndProject
 Global
