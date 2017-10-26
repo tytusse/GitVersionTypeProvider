@@ -44,7 +44,7 @@ the projects should work without issues.
 This is a bit tricky, but when you think about it, you may even start to consider it as *elegant* :-)
 
 # References
-- https://github.com/Fody/Stamp - allows to embedd git version in post-commit style (Mono.Cecil) - main inspiration for this excersize
+- https://github.com/Fody/Stamp - allows to embedd git version in post-commit style (Mono.Cecil) - main inspiration for this exercise
 - https://github.com/fsprojects/FSharp.TypeProviders.SDK - the starting point for type providers
 - https://sergeytihon.com/2016/07/11/f-type-providers-development-tips-not-tricks/ - good advices for type providers
 - https://fsprojects.github.io/Paket/getting-started.html - paket, which I used for the 1st time in this project and I already see adventages
