@@ -31,7 +31,7 @@ using System.Reflection;
 It uses/requires 3rd party libs to read git information, namely *LibGit2Sharp*, which is a bit tricky as it uses native dll.
 
 ## Constants/Literals to the rescue
-The `Git.Version.Value` field is a **const string** field. 
+The `Git.Version.Brief` field is a **const string** field. 
 Now, constants/literals in .NET are **inlined** and I have a feeling that this might allow to discard 3rd party libs at runtime.
 
 Let's consider the following approach
@@ -42,6 +42,17 @@ During compilation, type provider dlls should **not** be copied to *other projec
 the projects should work without issues.
 
 This is a bit tricky, but when you think about it, you may even start to consider it as *elegant* :-)
+
+# List of generated literal fields
+All fields that are generated in `Git.Version` class are:
+- `Sha:string` - commit sha
+- `Tags:string` - list of tags separated by "|" char
+- `IsDirty:bool` - set to `true` if git intex is not commited
+- `Branch:string` - name of current branch, i.e.: "origin/master"
+- `RemoteName:string` - name of remote ref, i.e. "origin"
+- `RemoteUrl:string` - url of remote branch, i.e. "git@github.com:tytusse/GitVersionTypeProvider.git"
+- `Long:string` - long version string in format: "Sha:RemoteUrl" with optional "dirty" prefix
+- `Brief:string` - short version string in format: "Sha:BranchName"  with optional "dirty" suffix
 
 # References
 - https://github.com/Fody/Stamp - allows to embedd git version in post-commit style (Mono.Cecil) - main inspiration for this exercise
