@@ -18,7 +18,7 @@ Goal is to use it like this:
 module MyLibrary
 
 [<Literal>]
-let Version = Git.Version.Value
+let Version = Git.Version.Brief
 ```
 
 and then in C#:
