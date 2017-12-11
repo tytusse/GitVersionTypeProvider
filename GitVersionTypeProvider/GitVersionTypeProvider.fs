@@ -79,6 +79,7 @@ type Provider(cfg:TypeProviderConfig) as this =
             [
                 ProvidedLiteralField("Long", typeof<string>, metaData.LongVersion)
                 ProvidedLiteralField("Brief", typeof<string>, metaData.Version)
+                ProvidedLiteralField("Sha", typeof<string>, metaData.Sha)
                 ProvidedLiteralField("IsDirty", typeof<bool>, metaData.IsDirty)
                 ProvidedLiteralField("Branch", typeof<string>, metaData.Branch)
                 ProvidedLiteralField("RemoteName", typeof<string>, metaData.RemoteName |> Option.defaultValue "")
