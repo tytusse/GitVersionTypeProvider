@@ -9,6 +9,30 @@ open ProviderImplementation.ProvidedTypes
 open System.Reflection
 open LibGit2Sharp
 
+type MetaData = {
+    Sha:string
+    Branch:string
+    IsDirty:bool
+    RemoteName:string option
+    RemoteUrl:string option
+    Tags:Tag list
+}
+with
+    member this.Version = 
+        seq {
+            yield this.Sha
+            yield this.Branch
+            if this.IsDirty then yield "[dirty]"
+        } |> String.concat(":")
+
+    member this.LongVersion = 
+        seq {
+            if this.IsDirty then yield "[dirty]"
+            yield this.Sha
+            match this.RemoteName with Some r -> yield r | None -> ()
+            match this.RemoteUrl with Some r -> yield r | None -> ()
+        } |> String.concat(":")
+
 [<TypeProvider>]
 type Provider(cfg:TypeProviderConfig) as this =
     inherit TypeProviderForNamespaces()
@@ -23,42 +47,47 @@ type Provider(cfg:TypeProviderConfig) as this =
             | null -> None
             | root -> findRepositoryRoot root
     
-    let formatVersionString root =
+    let getRepoData root =
         use r = new Repository(root)
-        (*
-        "sha", r.Head.Tip.Sha 
-        "branch", r.Head.TrackedBranch.FriendlyName
-        "repo", r.Network.Remotes.[r.Head.RemoteName].Url
-        *)
-        seq {
-            if r.RetrieveStatus().IsDirty then yield "[dirty]"
-            yield r.Head.Tip.Sha
-            match r.Head.RemoteName with
-            | null -> ()
-            | x -> 
-                yield x
-                match r.Network.Remotes |> Seq.tryFind( fun x -> x.Name = r.Head.RemoteName) with
-                | Some remote -> yield remote.Url
-                | None -> ()
-        } |> String.concat(":")
+        let remoteName = r.Head.RemoteName |> Option.ofObj
+        
+        {
+            IsDirty =r.RetrieveStatus().IsDirty
+            Sha = r.Head.Tip.Sha
+            Branch = r.Head.TrackedBranch.FriendlyName
+            RemoteName = remoteName
+            RemoteUrl = 
+                remoteName 
+                |> Option.bind(fun rn -> r.Network.Remotes |> Seq.tryFind( fun r -> r.Name = rn))
+                |> Option.map(fun r -> r.Url)
+            Tags = r.Tags |> List.ofSeq
+        }
         
 
     let createTypes () =
-        let version =
-            match findRepositoryRoot cfg.ResolutionFolder with
-            | Some root -> 
-                try
-                    formatVersionString root
+        let metaData =
+            findRepositoryRoot cfg.ResolutionFolder
+            |> Option.map(fun root ->
+                try getRepoData root
                 with x ->
                     raise(exn(sprintf "Failed obtaining version string with error: %s:%s" (x.GetType().Name) x.Message, x))
-            | None -> "not versioned"
+            )
 
         let myType = ProvidedTypeDefinition(asm, ns, "Version", Some typeof<obj>)
-        let field = ProvidedLiteralField("Value", typeof<string>, version)
-        let resFld = ProvidedLiteralField("ResolutionFolder", typeof<string>, cfg.ResolutionFolder)
-        
-        myType.AddMember(field)
-        myType.AddMember(resFld)
+        metaData
+        |> Option.iter(fun metaData ->
+            [
+                ProvidedLiteralField("Long", typeof<string>, metaData.LongVersion)
+                ProvidedLiteralField("Brief", typeof<string>, metaData.Version)
+                ProvidedLiteralField("IsDirty", typeof<bool>, metaData.IsDirty)
+                ProvidedLiteralField("Branch", typeof<string>, metaData.Branch)
+                ProvidedLiteralField("RemoteName", typeof<string>, metaData.RemoteName |> Option.defaultValue "")
+                ProvidedLiteralField("RemoteUrl", typeof<string>, metaData.RemoteUrl |> Option.defaultValue "")
+                ProvidedLiteralField("ResolutionFolder", typeof<string>, cfg.ResolutionFolder)
+                ProvidedLiteralField("Tags", typeof<string>, metaData.Tags |> List.map(fun t -> t.FriendlyName)|> String.concat "|")
+            ]
+            |> List.iter myType.AddMember
+        )
         [myType]
 
     do

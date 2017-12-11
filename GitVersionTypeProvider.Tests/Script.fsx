@@ -1,8 +1,8 @@
-﻿#r @"..\GitVersionTypeProvider\bin\Debug\GitVersionTypeProvider.dll"
+﻿#r @"..\GitVersionTypeProvider\bin\Release\GitVersionTypeProvider.dll"
 
 open System.Reflection
 
-[<assembly: AssemblyFileVersion(Git.Version.Value)>]
+[<assembly: AssemblyFileVersion(Git.Version.Brief)>]
 do ()
 
 printfn "%s" Git.Version.ResolutionFolder
