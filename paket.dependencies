@@ -3,4 +3,5 @@ source https://www.nuget.org/api/v2/
 nuget FSharp.Core
 nuget FSharp.TypeProviders.StarterPack
 nuget LibGit2Sharp
+nuget LibGit2Sharp.NativeBinaries
 nuget System.ValueTuple 4.4.0 restriction: >= net452

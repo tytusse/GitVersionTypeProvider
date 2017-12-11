@@ -1,4 +1,5 @@
 System.ValueTuple
 FSharp.Core
 LibGit2Sharp
+LibGit2Sharp.NativeBinaries
 FSharp.TypeProviders.StarterPack
