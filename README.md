@@ -31,7 +31,7 @@ and then in C#:
 ```csharp
 using System.Reflection;
 [assembly:AssemblyFileVersion(MyLibrary.Version)]
-[assembly: AssemblyVersion(MyLibrary.Version)]
+[assembly: AssemblyVersion(MyLibrary.AsmVersion)]
 ```
 
 # Git.General: Accessing some general git info
