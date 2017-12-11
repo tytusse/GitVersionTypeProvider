@@ -30,7 +30,8 @@ and then in C#:
 
 ```csharp
 using System.Reflection;
-[assembly:AssemblyFileVersion(MyLibrary.Version)]
+[assembly:AssemblyInformationalVersion(MyLibrary.Version)]
+[assembly:AssemblyFileVersion(MyLibrary.AsmVersion)]
 [assembly:AssemblyVersion(MyLibrary.AsmVersion)]
 ```
 
