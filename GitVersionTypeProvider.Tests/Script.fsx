@@ -2,7 +2,8 @@
 
 open System.Reflection
 
-[<assembly: AssemblyFileVersion(Git.Version.Brief)>]
+[<assembly: AssemblyFileVersion(Git.General.BriefVersion)>]
+[<assembly: AssemblyVersion(Git.AssemblyVersion<1,0,0>.Value)>]
 do ()
 
-printfn "%s" Git.Version.ResolutionFolder
+printfn "%s" Git.General.ResolutionFolder

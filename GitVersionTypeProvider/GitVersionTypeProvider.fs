@@ -16,6 +16,7 @@ type MetaData = {
     RemoteName:string option
     RemoteUrl:string option
     Tags:Tag list
+    CommitCount:int
 }
 with
     member this.Version = 
@@ -50,7 +51,6 @@ type Provider(cfg:TypeProviderConfig) as this =
     let getRepoData root =
         use r = new Repository(root)
         let remoteName = r.Head.RemoteName |> Option.ofObj
-        
         {
             IsDirty =r.RetrieveStatus().IsDirty
             Sha = r.Head.Tip.Sha
@@ -61,6 +61,7 @@ type Provider(cfg:TypeProviderConfig) as this =
                 |> Option.bind(fun rn -> r.Network.Remotes |> Seq.tryFind( fun r -> r.Name = rn))
                 |> Option.map(fun r -> r.Url)
             Tags = r.Tags |> List.ofSeq
+            CommitCount = r.Head.Commits |> Seq.length
         }
         
 
@@ -73,12 +74,12 @@ type Provider(cfg:TypeProviderConfig) as this =
                     raise(exn(sprintf "Failed obtaining version string with error: %s:%s" (x.GetType().Name) x.Message, x))
             )
 
-        let myType = ProvidedTypeDefinition(asm, ns, "Version", Some typeof<obj>)
-        metaData
-        |> Option.iter(fun metaData ->
+        match metaData with
+        | Some metaData ->
+            let paremeterless = ProvidedTypeDefinition(asm, ns, "General", Some typeof<obj>)
             [
-                ProvidedLiteralField("Long", typeof<string>, metaData.LongVersion)
-                ProvidedLiteralField("Brief", typeof<string>, metaData.Version)
+                ProvidedLiteralField("LongVersion", typeof<string>, metaData.LongVersion)
+                ProvidedLiteralField("BriefVersion", typeof<string>, metaData.Version)
                 ProvidedLiteralField("Sha", typeof<string>, metaData.Sha)
                 ProvidedLiteralField("IsDirty", typeof<bool>, metaData.IsDirty)
                 ProvidedLiteralField("Branch", typeof<string>, metaData.Branch)
@@ -87,9 +88,27 @@ type Provider(cfg:TypeProviderConfig) as this =
                 ProvidedLiteralField("ResolutionFolder", typeof<string>, cfg.ResolutionFolder)
                 ProvidedLiteralField("Tags", typeof<string>, metaData.Tags |> List.map(fun t -> t.FriendlyName)|> String.concat "|")
             ]
-            |> List.iter myType.AddMember
-        )
-        [myType]
+            |> List.iter paremeterless.AddMember
+
+            let assemblyVersion = ProvidedTypeDefinition(asm, ns, "AssemblyVersion", Some typeof<obj>)
+            assemblyVersion.AddXmlDoc("This type will generate proper assembly version, by concatenating provided minor, major and revision with build represented by commit count")
+            let prefix = 
+                ["Major";"Minor";"Revision"]
+                |> List.map (fun n -> ProvidedStaticParameter(n, typeof<int>))
+
+            assemblyVersion.DefineStaticParameters(prefix, (fun typeName parameterValues ->
+                match parameterValues with 
+                | [| :? int as major; :? int as minor; :? int as revision |] ->
+                    let ty = ProvidedTypeDefinition(asm, ns, typeName, baseType = Some typeof<obj>)
+                    let ver = sprintf "%d.%d.%d.%d" major minor revision metaData.CommitCount
+                    ty.AddMember(ProvidedLiteralField("Value", typeof<string>, ver))
+                    ty
+                | x -> failwithf "unsupported parameter list: %A" x
+                )
+            )
+
+            [paremeterless;assemblyVersion]
+        | None -> []
 
     do
         this.AddNamespace(ns, createTypes())
