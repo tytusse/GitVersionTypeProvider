@@ -58,6 +58,37 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Compile Include="AssemblyReader.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="AssemblyReaderReflection.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="ProvidedTypes.fsi">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="ProvidedTypes.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="ProvidedTypesContext.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="ProvidedTypesTesting.fs">
+      <Paket>True</Paket>
+    </Compile>
+    <Compile Include="AssemblyInfo.fs" />
+    <Content Include="paket.references" />
+    <Compile Include="GitVersionTypeProvider.fs" />
+    <None Include="paket.template" />
+    <None Include="PlayWithLib2Git.fsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+  </ItemGroup>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2' Or $(TargetFrameworkVersion) == 'v4.6.3' Or $(TargetFrameworkVersion) == 'v4.7' Or $(TargetFrameworkVersion) == 'v4.7.1')">
       <ItemGroup>
@@ -925,34 +956,4 @@
     </When>
   </Choose>
   <Import Project="..\packages\NETStandard.Library\build\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library\build\NETStandard.Library.targets')" Label="Paket" />
-  <ItemGroup>
-    <Compile Include="AssemblyReader.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="AssemblyReaderReflection.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="ProvidedTypes.fsi">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="ProvidedTypes.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="ProvidedTypesContext.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="ProvidedTypesTesting.fs">
-      <Paket>True</Paket>
-    </Compile>
-    <Compile Include="AssemblyInfo.fs" />
-    <Content Include="paket.references" />
-    <Compile Include="GitVersionTypeProvider.fs" />
-    <None Include="PlayWithLib2Git.fsx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-  </ItemGroup>
 </Project>
