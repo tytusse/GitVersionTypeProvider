@@ -31,23 +31,23 @@ and then in C#:
 ```csharp
 using System.Reflection;
 [assembly:AssemblyFileVersion(MyLibrary.Version)]
-[assembly: AssemblyVersion(MyLibrary.AsmVersion)]
+[assembly:AssemblyVersion(MyLibrary.AsmVersion)]
 ```
 
 # Git.General: Accessing some general git info
 All fields that are generated in `Git.General` class are:
 - `Sha:string` - commit sha
 - `Tags:string` - list of tags separated by "|" char
-- `IsDirty:bool` - set to `true` if git intex is not commited
+- `IsDirty:bool` - set to `true` if some uncomited changes exist in workdir
 - `Branch:string` - name of current branch, i.e.: "origin/master"
 - `RemoteName:string` - name of remote ref, i.e. "origin"
 - `RemoteUrl:string` - url of remote branch, i.e. "git@github.com:tytusse/GitVersionTypeProvider.git"
 - `LongVersion:string` - long version string in format: "Sha:RemoteUrl" with optional "dirty" prefix
 - `BriefVersion:string` - short version string in format: "Sha:BranchName"  with optional "dirty" suffix
-- 'CommitCount:int' - number of commits in current branch
+- `CommitCount:int` - number of commits in current branch
 
 # Git.AssemblyVersion<...>: generating proper AssemblyVersion string
-`Git.AssemblyVersion<...>` type allows generating AssemblyVersion in `major.minor.rev.build` format, where first 3 numbers must be provided in code as compile time vers, while for the last one ("build") git branch commit count is used, for example:
+`Git.AssemblyVersion<...>` type allows generating AssemblyVersion in `major.minor.rev.build` format, where first 3 numbers must be provided in code as compile time vars, while for the last one ("build") git branch commit count is used, for example:
 
 ```FSharp
 [<assembly: AssemblyVersion(Git.AssemblyVersion<1,2,3>.Value)>]
