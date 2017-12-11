@@ -1,6 +1,8 @@
 ﻿type project
 authors tytusse
 projectUrl https://github.com/tytusse/GitVersionTypeProvider
+licenseUrl https://raw.githubusercontent.com/tytusse/GitVersionTypeProvider/master/LICENSE
+tags git version assemblyinfo typeprovider fsharp
 
 excludedDependencies
 	FSharp.TypeProviders.StarterPack
