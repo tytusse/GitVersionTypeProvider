@@ -11,7 +11,7 @@ open LibGit2Sharp
 
 type MetaData = {
     Sha:string
-    Branch:string
+    Branch:string option
     IsDirty:bool
     RemoteName:string option
     RemoteUrl:string option
@@ -22,7 +22,7 @@ with
     member this.Version = 
         seq {
             yield this.Sha
-            yield this.Branch
+            match this.Branch with Some r -> yield r | None -> ()
             if this.IsDirty then yield "[dirty]"
         } |> String.concat(":")
 
@@ -50,11 +50,15 @@ type Provider(cfg:TypeProviderConfig) as this =
     
     let getRepoData root =
         use r = new Repository(root)
+        let branch = 
+            match r.Head.TrackedBranch with
+            | null -> None
+            | x -> Some x.FriendlyName
         let remoteName = r.Head.RemoteName |> Option.ofObj
         {
             IsDirty =r.RetrieveStatus().IsDirty
             Sha = r.Head.Tip.Sha
-            Branch = r.Head.TrackedBranch.FriendlyName
+            Branch = branch
             RemoteName = remoteName
             RemoteUrl = 
                 remoteName 
